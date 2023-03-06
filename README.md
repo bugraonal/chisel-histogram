@@ -15,7 +15,7 @@ The hardware implementation of histogram equalization is made up of 4 piplined s
     - Empty stage: This stage empties the memory. 
 Each stage works on an individual memory. Upon completion of a single frame, the memory ports are shifted around such that, the next stage uses the previous stage's memory.
 
-![Architecture](https://github.com/bugraonal/chisel-histogram/docs/HistEq.drawio.png?raw=true)
+![Architecture](https://github.com/bugraonal/chisel-histogram/blob/master/docs/HistEq.drawio.png?raw=true)
 
 ### Usage
 There is a model implementation of histogram equalization and the individual stages can be tested using the following command:

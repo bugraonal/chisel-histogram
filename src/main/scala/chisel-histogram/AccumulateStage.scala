@@ -13,7 +13,7 @@ object AccumulateStage {
 class AccumulateStage(params: HistEqParams) extends Module {
     val io = IO(new Bundle{
         val address = Input(UInt(params.depth.W))
-        val memoryBus = Flipped(new MemoryBus(params))
+        val memoryBus = Flipped(new MemoryIO(params))
         val cdfMin = Valid(UInt(params.depth.W))
 
     })
@@ -23,15 +23,18 @@ class AccumulateStage(params: HistEqParams) extends Module {
     io.memoryBus.r_addr := io.address + 1.U
     io.memoryBus.w_addr := io.address
 
+    io.memoryBus.w_en := true.B
+
     accReg := accReg +& io.memoryBus.dout
     io.memoryBus.din := accReg
 
     io.cdfMin.valid := io.address === params.maxPix.U
+    val cdfMinReg = RegInit(0.U(params.depth.W))
+    val cdfInit = RegInit(false.B)
     when (io.address === params.maxPix.U) { cdfInit := false.B }
-    val cdfMinReg = Reg(UInt(params.depth.W))
-    val cdfInit = Reg(Bool())
+    io.cdfMin.bits := cdfMinReg
     when (~cdfInit & io.memoryBus.din =/= 0.U) {
-        io.cdfMin.bits := io.address - 1.U
+        cdfMinReg := io.address - 1.U
         cdfInit := true.B
     }
     

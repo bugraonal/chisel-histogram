@@ -18,7 +18,9 @@ class CountStage(params: HistEqParams) extends Module {
     val pixReg = Reg(UInt(params.depth.W))
 
     io.memoryBus.r_addr := io.pixIn
+    pixReg := io.pixIn
     io.memoryBus.w_addr := pixReg
     io.memoryBus.din := io.memoryBus.dout +& 1.U
+    io.memoryBus.w_en := true.B
 
 }

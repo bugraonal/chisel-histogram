@@ -21,7 +21,7 @@ class HistEqModel(params: HistEqParams) {
     
     def mapPix(pix: Int, cdf: ArrayBuffer[Int]): Int = {
         val cdfMin = cdf.find(x => x != 0)
-        ((cdf(pix) - cdfMin).toFloat / 
+        ((cdf(pix) - cdfMin.get).toFloat / 
             (params.numPixels - cdf.min) * params.maxPix).round
     }
 

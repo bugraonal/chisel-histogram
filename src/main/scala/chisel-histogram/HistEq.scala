@@ -11,10 +11,10 @@ class Histeq(params: HistEqParams) extends Module {
 
     val (pixCount, pixWrap) = Counter(0 until params.maxPix)
 
-    val countStage = CountStage(params, io.pixIn, memBusses(0))
-    val accumulateStage = AccumulateStage(params, memBusses(1))
-    val mapStage = MapStage(params, io.pixIn, io.pixOut, memBusses(2))
-    val emptyStage = EmptyStage(params, memBusses(3))
+    //val countStage = CountStage(params, io.pixIn, memBusses(0))
+    //val accumulateStage = AccumulateStage(params, memBusses(1))
+    //val mapStage = MapStage(params, io.pixIn, io.pixOut, memBusses(2))
+    //val emptyStage = EmptyStage(params, memBusses(3))
 
     val memories = MemoryController(params, memBusses)
 }

@@ -7,7 +7,7 @@ class Histeq(params: HistEqParams) extends Module {
         val pixOut = Output(UInt(params.depth.W))
     })
 
-    val memBusses = Seq.fill(4)(new MemoryBus(params))
+   // val memBusses = Seq.fill(4)(new MemoryBus(params))
 
     val (pixCount, pixWrap) = Counter(0 until params.maxPix)
 
@@ -16,5 +16,5 @@ class Histeq(params: HistEqParams) extends Module {
     //val mapStage = MapStage(params, io.pixIn, io.pixOut, memBusses(2))
     //val emptyStage = EmptyStage(params, memBusses(3))
 
-    val memories = MemoryController(params, memBusses)
+    //val memories = MemoryController(params, memBusses)
 }

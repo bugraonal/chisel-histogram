@@ -21,11 +21,11 @@ class MemoryControllerTest extends AnyFlatSpec with ChiselScalatestTester {
             dut.io.stageEnd.poke(false.B)
             for (i <- 0 until 2) {
                 for (j <- 0 until 4) {
-                    write(dut, j, i + j, i)
+                    write(dut, j, 4 * i + j, i)
                 }
                 dut.clock.step()
             }
-            for (i <- 0 until 2+1) {
+            for (i <- 0 until 2) {
                 for (j <- 0 until 4) {
                     dut.io.busses(j).w_en.poke(false.B)
                     read(dut, j, i)
@@ -33,7 +33,7 @@ class MemoryControllerTest extends AnyFlatSpec with ChiselScalatestTester {
                 dut.clock.step()
                 for (j <- 0 until 4) {
                     if (i > 0)
-                        dut.io.busses(j).dout.expect((i + j - 1).U)
+                        dut.io.busses(j).dout.expect((4 * i + j).U)
                 }
             }
         }
@@ -45,22 +45,24 @@ class MemoryControllerTest extends AnyFlatSpec with ChiselScalatestTester {
             dut.io.stageEnd.poke(false.B)
             for (i <- 0 until 2) {
                 for (j <- 0 until 4) {
-                    write(dut, j, i + j, i)
+                    write(dut, j, 4 * i + j, i)
                 }
                 dut.clock.step()
             }
             dut.io.stageEnd.poke(true.B)
             dut.clock.step()
             dut.io.stageEnd.poke(false.B)
-            for (i <- 0 until 2+1) {
+            for (i <- 0 until 2) {
                 for (j <- 0 until 4) {
                     dut.io.busses(j).w_en.poke(false.B)
                     read(dut, j, i)
                 }
                 dut.clock.step()
                 for (j <- 0 until 4) {
-                    if (i > 0)
-                        dut.io.busses((j - 1) % 4).dout.expect((i + j - 1).U)
+                    if (i > 0) {
+                        val sel = (j + 1) % 4
+                        dut.io.busses(sel).dout.expect((4 * i + j).U)
+                    }
                 }
             }
         }

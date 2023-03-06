@@ -18,7 +18,7 @@ Each stage works on an individual memory. Upon completion of a single frame, the
 ![Architecture](https://github.com/bugraonal/chisel-histogram/blob/master/docs/HistEq.drawio.png?raw=true)
 
 ### Usage
-There is a model implementation of histogram equalization and the individual stages can be tested using the following command:
+The available tests can be run using the following command:
 ```
 sbt test
 ```
@@ -26,6 +26,7 @@ Note that this project uses sbt version 1.8.0. This can be overwritten for the t
 ```
 sbt test sbt-version <VERSION>
 ```
+The list of available tests is shown in the progress section below.
 The model will use this [image](resources/simple.jpg) produce a [grayscale version](resources/gray.jpg) and [equalized version](resources/hist_out.jpg).
 
 ## Progress

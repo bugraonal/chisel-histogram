@@ -38,7 +38,7 @@ The model will use this [image](resources/simple.jpg) produce a [grayscale versi
          - [x] Stage tests
          - [x] Memory Controller
          - [x] Memory Controller test
-         - [ ] Top module
+         - [x] Top module
          - [ ] Top modle test
 - [ ] Histogram Matching
     - [ ] Model

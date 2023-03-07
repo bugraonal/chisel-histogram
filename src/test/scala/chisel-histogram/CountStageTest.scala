@@ -4,7 +4,7 @@ import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 
 class CountStageTest extends AnyFlatSpec with ChiselScalatestTester {
-    val params = HistEqParams(2, 4, 1)
+    val params = HistEqParams(2, 4, 1, 1.0f)
 
     behavior of "CountStage"
     it should "should count the pixels" in {

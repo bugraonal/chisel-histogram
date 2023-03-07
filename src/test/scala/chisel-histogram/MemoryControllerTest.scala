@@ -4,7 +4,7 @@ import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 
 class MemoryControllerTest extends AnyFlatSpec with ChiselScalatestTester {
-    val params = HistEqParams(2, 4, 1)
+    val params = HistEqParams(2, 4, 1, 1.0f)
 
     def write(cont: MemoryController, mem: Int, value: Int, addr: Int): Unit = {
         cont.io.busses(mem).w_addr.poke(addr.U)

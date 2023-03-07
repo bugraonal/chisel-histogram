@@ -11,7 +11,7 @@ class HistEqModelTester extends AnyFlatSpec with ChiselScalatestTester {
     val img = imread("resources/simple.jpg", IMREAD_GRAYSCALE)
     val img_indexer: UByteIndexer = img.createIndexer()
     val frame = ArrayBuffer.tabulate(img.rows, img.cols){(x,y) => img_indexer.get(x, y)}
-    val params = HistEqParams(img.rows, img.cols, 8)
+    val params = HistEqParams(img.rows, img.cols, 8, 1.0f)
 
     behavior of "HistEqModel"
     it should "find the histogram of an image" in {

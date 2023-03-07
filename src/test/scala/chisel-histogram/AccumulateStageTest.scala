@@ -4,7 +4,7 @@ import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 
 class AccumulateStageTest extends AnyFlatSpec with ChiselScalatestTester {
-    val params = HistEqParams(2, 4, 1)
+    val params = HistEqParams(2, 4, 1, 1.0f)
 
     behavior of "AccumulateStage"
     it should "accumulate the read value and write it to next addr" in {

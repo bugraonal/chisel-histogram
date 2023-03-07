@@ -4,7 +4,7 @@ import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 
 class EmptyStageTest extends AnyFlatSpec with ChiselScalatestTester {
-    val params = HistEqParams(2, 4, 1)
+    val params = HistEqParams(2, 4, 1, 1.0f)
 
     behavior of "EmptyStage"
     it should "should always write 0 to memory" in {

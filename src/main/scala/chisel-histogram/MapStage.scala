@@ -14,8 +14,8 @@ object MapStage {
 class MapStage(params: HistEqParams) extends Module {
     val io = IO(new Bundle{
         val pixIn = Input(UInt(params.depth.W))
-        val cdfMin = Valid(UInt(params.memoryDepth.W))
-        val memoryBus = Flipped(new MemoryBus(params))
+        val cdfMin = Flipped(Valid(UInt(params.memoryDepth.W)))
+        val memoryBus = Flipped(new MemoryIO(params))
         val pixOut = Output(UInt(params.depth.W))
     })
 
@@ -26,6 +26,10 @@ class MapStage(params: HistEqParams) extends Module {
     // Read CDF of input pixel
     io.memoryBus.r_addr := io.pixIn
     val cdf = io.memoryBus.dout
+    // don't write
+    io.memoryBus.w_en := false.B
+    io.memoryBus.w_addr := DontCare
+    io.memoryBus.din := DontCare
 
     // The constant multiplier and division is done by mutliplying
     // by constant and shifting. The constants are calculated in

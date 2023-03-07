@@ -19,15 +19,21 @@ class MapStage(params: HistEqParams) extends Module {
         val pixOut = Output(UInt(params.depth.W))
     })
 
+    // Save the minimum value at the end of frame
     val cdfMinReg = Reg(UInt(params.memoryDepth.W))
     when (io.cdfMin.valid) { cdfMinReg := io.cdfMin.bits }
 
+    // Read CDF of input pixel
     io.memoryBus.r_addr := io.pixIn
     val cdf = io.memoryBus.dout
 
     // The constant multiplier and division is done by mutliplying
     // by constant and shifting. The constants are calculated in
     // HistEqParams
+    
+    // This is most likey to be the longest path in the design.
+    // Maybe include a FF here.
+    // BRAM -> Add/Sub -> Mult -> Shift -> Compare -> Mux
     val calc = ((io.memoryBus.dout - cdfMinReg) *
         params.mapMultiplier.U) >> params.mapShiftWidth.U
 

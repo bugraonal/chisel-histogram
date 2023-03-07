@@ -7,14 +7,17 @@ class Histeq(params: HistEqParams) extends Module {
         val pixOut = Output(UInt(params.depth.W))
     })
 
-   // val memBusses = Seq.fill(4)(new MemoryBus(params))
+    val memBusses = Seq.fill(4)(new MemoryBus(params))
 
+    // FIXME: Think about the last cycle, see if we need to increase the range
+    // by 1 to account for the last pixel
     val (pixCount, pixWrap) = Counter(0 until params.maxPix)
+    val cdfMin = Valid(UInt(params.depth.W))
 
-    //val countStage = CountStage(params, io.pixIn, memBusses(0))
-    //val accumulateStage = AccumulateStage(params, memBusses(1))
-    //val mapStage = MapStage(params, io.pixIn, io.pixOut, memBusses(2))
-    //val emptyStage = EmptyStage(params, memBusses(3))
+    val countStage = CountStage(params, io.pixIn, memBusses(0))
+    val accumulateStage = AccumulateStage(params, memBusses(1), pixCount)
+    val mapStage = MapStage(params, io.pixIn, cdfMin, io.pixOut, memBusses(2))
+    val emptyStage = EmptyStage(params, memBusses(3), pixCount)
 
-    //val memories = MemoryController(params, memBusses)
+    val memories = MemoryController(params, memBusses, pixWrap)
 }

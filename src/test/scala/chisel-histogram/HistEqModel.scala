@@ -2,6 +2,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class HistEqModel(params: HistEqParams) {
     def getHist(frame: ArrayBuffer[ArrayBuffer[Int]]): ArrayBuffer[Int] = {
+        // Find the histogram of frame
         val hist = ArrayBuffer.fill(params.numPixelVals)(0)
         for (row <- frame) {
             for (pix <- row) {
@@ -12,6 +13,7 @@ class HistEqModel(params: HistEqParams) {
     }
 
     def getCDF(hist: ArrayBuffer[Int]): ArrayBuffer[Int] = {
+        // convert histogram to non-normalized cdf
         val cdf = ArrayBuffer.fill(params.numPixelVals)(0)
         for (i <- 0 until params.numPixelVals) {
             cdf(i) = hist.slice(0, i + 1).sum
@@ -20,12 +22,14 @@ class HistEqModel(params: HistEqParams) {
     }
     
     def mapPix(pix: Int, cdf: ArrayBuffer[Int]): Int = {
+        // map a given pixel value to it's new value
         val cdfMin = cdf.find(x => x != 0)
         ((cdf(pix) - cdfMin.get).toFloat / 
             (params.numPixels - cdf.min) * params.maxPix).round
     }
 
     def equalize(frame: ArrayBuffer[ArrayBuffer[Int]]): ArrayBuffer[ArrayBuffer[Int]] = {
+        // map all the pixels
         val hist = getHist(frame)
         val cdf = getCDF(hist)
         val newFrame = ArrayBuffer.fill(params.numRows, params.numCols)(0)

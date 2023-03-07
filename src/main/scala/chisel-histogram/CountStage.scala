@@ -14,11 +14,12 @@ class CountStage(params: HistEqParams) extends Module {
         val pixIn = Input(UInt(params.depth.W))
         val memoryBus = Flipped(new MemoryIO(params))
     })
+    
+    // Delay the pixel value by 1-cycle to write back
+    val pixReg = RegNext(io.pixIn)
 
-    val pixReg = Reg(UInt(params.depth.W))
-
+    // Read current, write to previous incremented value
     io.memoryBus.r_addr := io.pixIn
-    pixReg := io.pixIn
     io.memoryBus.w_addr := pixReg
     io.memoryBus.din := io.memoryBus.dout +& 1.U
     io.memoryBus.w_en := true.B

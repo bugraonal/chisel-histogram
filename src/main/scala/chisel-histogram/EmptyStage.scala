@@ -13,7 +13,8 @@ class EmptyStage(params: HistEqParams) extends Module {
         val address = Input(UInt(params.depth.W))
         val memoryBus = Flipped(new MemoryIO(params))
     })
-
+    
+    // Always write 0
     io.memoryBus.w_addr := io.address
     io.memoryBus.w_en := true.B
     io.memoryBus.din := 0.U

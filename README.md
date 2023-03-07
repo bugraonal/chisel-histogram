@@ -9,10 +9,10 @@ Using this histogram, each color value is mapped to a new value.
 
 ### Architecture
 The hardware implementation of histogram equalization is made up of 4 piplined stages:
-    - Counting stage: This stage constructs the histogram.
-    - Accumulation stage: This stage converts the histogram to non-normalized CDF (cummulative distribution function).
-    - Map stage: This stage maps pixel values to new pixel values.
-    - Empty stage: This stage empties the memory. 
+- Counting stage: This stage constructs the histogram.
+- Accumulation stage: This stage converts the histogram to non-normalized CDF (cummulative distribution function).
+- Map stage: This stage maps pixel values to new pixel values.
+- Empty stage: This stage empties the memory. 
 Each stage works on an individual memory. Upon completion of a single frame, the memory ports are shifted around such that, the next stage uses the previous stage's memory.
 
 ![Architecture](https://github.com/bugraonal/chisel-histogram/blob/master/docs/HistEq.drawio.png?raw=true)

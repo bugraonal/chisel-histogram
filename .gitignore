@@ -3,3 +3,11 @@
 **/*.fls
 **/*.log
 **/*.gz
+**/.bloop
+**/.bsp
+**/.metals
+project/metals.sbt
+project/project
+project/target
+test_run_dir/
+target

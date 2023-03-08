@@ -20,7 +20,7 @@ class MapStage(params: HistEqParams) extends Module {
     })
 
     // Save the minimum value at the end of frame
-    val cdfMinReg = Reg(UInt(params.memoryDepth.W))
+    val cdfMinReg = RegInit(0.U(params.memoryDepth.W))
     when (io.cdfMin.valid) { cdfMinReg := io.cdfMin.bits }
 
     // Read CDF of input pixel

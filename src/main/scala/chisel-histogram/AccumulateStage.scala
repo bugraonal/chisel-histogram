@@ -15,7 +15,6 @@ class AccumulateStage(params: HistEqParams) extends Module {
         val address = Input(UInt(params.depth.W))
         val memoryBus = Flipped(new MemoryIO(params))
         val cdfMin = Valid(UInt(params.depth.W))
-
     })
     
     // Register to store accumulated value
@@ -23,14 +22,15 @@ class AccumulateStage(params: HistEqParams) extends Module {
     accReg := accReg +& io.memoryBus.dout
 
     // Read next addr, write to current
-    io.memoryBus.r_addr := io.address + 1.U
+    val addressReg = RegNext(io.address, params.maxPix.U)
+    io.memoryBus.r_addr := io.address
     
-    io.memoryBus.w_addr := io.address
+    io.memoryBus.w_addr := addressReg
     io.memoryBus.w_en := true.B
     io.memoryBus.din := accReg
 
     // Minimum CDF address where the result is non-zero
-    // Only set to new value (valid) at the end of the pixel count
+    // Only set valid at the end of the pixel count
     io.cdfMin.valid := io.address === params.maxPix.U
     val cdfMinReg = RegInit(0.U(params.depth.W))
     val cdfInit = RegInit(false.B)

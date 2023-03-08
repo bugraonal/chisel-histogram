@@ -17,11 +17,21 @@ class CountStage(params: HistEqParams) extends Module {
     
     // Delay the pixel value by 1-cycle to write back
     val pixReg = RegNext(io.pixIn)
+    val notRead = RegInit(true.B)
+    val oldVal = RegNext(io.memoryBus.dout, 0.U)
 
-    // Read current, write to previous incremented value
+    // Read current
     io.memoryBus.r_addr := io.pixIn
+    val memVal = Mux(notRead, oldVal, io.memoryBus.dout)
+    // write to previous incremented value
     io.memoryBus.w_addr := pixReg
-    io.memoryBus.din := io.memoryBus.dout +& 1.U
+    io.memoryBus.din := memVal +& 1.U
     io.memoryBus.w_en := true.B
+    // make sure it doesn't read and write the same address
+    notRead := false.B
+    when (io.pixIn === pixReg) {
+        io.memoryBus.r_addr := io.pixIn + 1.U
+        notRead := true.B
+    }
 
 }

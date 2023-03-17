@@ -20,7 +20,7 @@ class MemoryBus(params: HistEqParams) extends Bundle {
 object MemoryController {
     def apply(params: HistEqParams, busses: Seq[MemoryBus],
               stageEnd: Bool, stageStart: Bool) = {
-        val mod = new MemoryController(params)
+        val mod = Module(new MemoryController(params))
         busses.zip(mod.io.busses).foreach{case (x, y) => y <> x}
         mod.io.stageEnd := stageEnd
         mod.io.stageStart := stageStart
@@ -40,7 +40,7 @@ class MemoryController(params: HistEqParams) extends Module {
 
     // memory instances
     val memories = Seq.fill(4){
-        SyncReadMem(params.numPixelVals, UInt(params.memoryDepth.W))
+        SyncReadMem(params.numPixelVals, UInt(params.memoryDepth.W), SyncReadMem.WriteFirst)
     }
     
     // Connect the ports to memories based on count

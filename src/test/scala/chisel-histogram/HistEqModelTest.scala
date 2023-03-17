@@ -6,7 +6,7 @@ import org.bytedeco.javacpp.opencv_imgcodecs._
 import org.bytedeco.javacpp.indexer._
 import scala.collection.mutable.ArrayBuffer
 
-class HistEqModelTester extends AnyFlatSpec with ChiselScalatestTester {
+class HistEqModelTest extends AnyFlatSpec with ChiselScalatestTester {
     
     val img = imread("resources/simple.jpg", IMREAD_GRAYSCALE)
     val img_indexer: UByteIndexer = img.createIndexer()
@@ -26,7 +26,7 @@ class HistEqModelTester extends AnyFlatSpec with ChiselScalatestTester {
         val histeq = new HistEqModel(params)
         val hist = histeq.getHist(frame)
         val cdf  = histeq.getCDF(hist)
-        var sum = 0
+        var sum = 0.toLong
         for (i <- 0 until params.numPixelVals) {
             sum += hist(i)
             assert(cdf(i) == sum, s"CDF index: $i")

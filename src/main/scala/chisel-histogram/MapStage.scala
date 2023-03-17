@@ -3,11 +3,12 @@ import chisel3.util._
 
 object MapStage {
     def apply(params: HistEqParams, pixIn: UInt, cdfMin: Valid[UInt], pixOut: UInt, memoryBus: MemoryBus)  = {
-        val mod = new MapStage(params)
+        val mod = Module(new MapStage(params))
         mod.io.pixIn := pixIn
         mod.io.cdfMin <> cdfMin
         pixOut := mod.io.pixOut
         memoryBus <> mod.io.memoryBus
+        mod
     }
 }
 

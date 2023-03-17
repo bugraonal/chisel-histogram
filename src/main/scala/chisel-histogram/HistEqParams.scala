@@ -1,4 +1,5 @@
 import chisel3.util._
+import scala.util.control.Breaks._
 import scala.math.pow
 
 case class HistEqParams(val numRows: Int, val numCols: Int,
@@ -12,18 +13,21 @@ case class HistEqParams(val numRows: Int, val numCols: Int,
     def findMultiplier(maxError: Float): (Long, Int) = {
         // Find the minimum amount of bits required to keep the fixed point
         // mutliplier error within the maxError parameter
-        val maxBits = 32
+        val maxBits = 256
         val mapMultiplierActual = maxPix.toFloat / numPixels
         for (bits <- 0 to maxBits) {
             val mapMultiplier = (mapMultiplierActual * pow(2, bits)).round
-            for (cdf <- 0 to numPixels) {
-                // Multiply with maxPix for worst case
-                val calculated = (cdf * maxPix * mapMultiplier) >>> bits
-                val actual = (cdf * maxPix * mapMultiplierActual)
-                val error = (calculated - actual).abs
-                if (error < actual * maxError) {
-                    println(s"Found multiplier shift width at $bits bits for $maxError error")
-                    return (mapMultiplier, bits)
+            breakable {
+                for (cdf <- 0 to numPixels) {
+                    // Multiply with maxPix for worst case
+                    val calculated = (cdf * maxPix * mapMultiplier) >>> bits
+                    val actual = (cdf * maxPix * mapMultiplierActual)
+                    val error = (calculated - actual).abs
+                    if (error > maxPix * maxError) { break() }
+                    if (cdf == numPixels) {
+                        println(s"Found multiplier shift width at $bits bits for $maxError error")
+                        return (mapMultiplier, bits)
+                    }
                 }
             }
         }

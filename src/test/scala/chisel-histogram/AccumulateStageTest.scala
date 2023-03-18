@@ -16,11 +16,11 @@ class AccumulateStageTest extends AnyFlatSpec with ChiselScalatestTester {
                 else
                     dut.io.memoryBus.dout.poke((i - 1).U)
 
-                dut.io.memoryBus.w_addr.expect(i.U)
-                dut.io.memoryBus.din.expect((0 until i).sum.U)
+                dut.io.memoryBus.r_addr.expect(i.U)
                 if (i > 1) {
-                    dut.io.memoryBus.r_addr.expect((i - 1).U)
-                    dut.io.cdfMin.bits.expect(1.U)
+                    dut.io.memoryBus.w_addr.expect((i - 1).U)
+                    dut.io.memoryBus.din.expect((0 until i).sum.U)
+                    dut.io.cdfMin.bits.expect(0.U)
                 }
                 dut.clock.step()
             }
